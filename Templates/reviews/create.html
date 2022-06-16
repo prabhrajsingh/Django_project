@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if not created %}
+
+<! as_p is a method to turn it into paragraph type text>
+
+<div style = 'margin-top:30px;' >
+    <form action= '.' method = 'POST'>
+        {% csrf_token %}    
+        {{form.as_p }}        
+        <! input type = 'submit' value='Create Review'>
+        <button style = 'margin-top:10px;' type = 'submit'>Create Review</button>
+    </form>
+</div>
+{% else %}
+    <p> Y O U R &ensp; R E V I E W &ensp;  W A S &ensp; C R E A T E D</p>
+    <a href='/reviews/{{ object.id }}/'>{{ object.title }} - {{ object.content}}</a>
+{% endif %}
+{% endblock content %}
