@@ -13,7 +13,7 @@ class Review(models.Model):
     
     title = models.CharField(max_length=100)
 
-    slug = models.SlugField(blank= True, null= True)  
+    slug = models.SlugField(unique = True, blank= True, null= True)  
 
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add = True) 
@@ -39,7 +39,9 @@ def slugify_instance_title(instance, save = False, new_slug = None):
     else:
         slug = slugify(instance.title)
 
-    qs = Review.objects.filter(slug = slug).exclude(id = instance.id)
+    Klass=instance.__class__ # this is another way to access the class of the instance and using Klass we can apply it to different models as well
+
+    qs = Klass.objects.filter(slug = slug).exclude(id = instance.id) #replacing reviews with Klass
     
     if qs.exists():
         rand_int = random.randint(300_000, 500_000)
@@ -50,7 +52,7 @@ def slugify_instance_title(instance, save = False, new_slug = None):
 
     if save:
         instance.save()
-        
+
     return instance
     
 def review_pre_save(sender, instance, *args, **kwargs):
