@@ -3,16 +3,6 @@
 
 {% block content %} 
 {% if not request.user.is_authenticated %}
-    <style>
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background-image: url("https://wallpaperaccess.com/full/3658919.jpg");
-        background-repeat: no-repeat;
-        background-position: right top;
-        background-size: 1080px,1080px;
-        background-blend-mode: darken;  
-    }
-    </style>
     <div style = 'margin-top:30px;'>
         <form method = 'POST'>     {% csrf_token %}
             {{form.as_p}}
