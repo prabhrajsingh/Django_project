@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.db.models.signals import pre_save, post_save
+from django.urls import reverse
 
 # https://docs.djangoproject.com/en/4.0/ref/models/fields/
 
@@ -23,6 +24,12 @@ class Review(models.Model):
     updated = models.DateTimeField(auto_now = True)
     # these two (timestamp and updated) feature help in tracking the interaction between user and the data
 
+    def get_absolute_url(self):
+        #return f'/reviews/{self.slug}/'
+        #when we have multiple model we can simply have this as our dynamic url instead of hardcoding it 
+        return reverse('review-detail', kwargs={"slug": self.slug})
+        
+
     def save(self, *args, **kwargs):
         #obj = Article.object.get(id=1)
         #set = something
@@ -31,6 +38,8 @@ class Review(models.Model):
         # if (self.slug is None):
         #     self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
 
 def slugify_instance_title(instance, save = False, new_slug = None):
     

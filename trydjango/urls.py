@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+
 from accounts.views import (
     login_view,
     logout_view,
@@ -31,10 +32,10 @@ from .views import home_view
 urlpatterns = [
     path('', home_view), #home/main page/ root
     path('reviews/', review_search_view),
-    path('reviews/create/', review_create_view),
+    path('reviews/create/', review_create_view, name = 'review-create'),
     
     #how to handle a dynamic url
-    path('reviews/<int:id>/', review_detail_view),
+    path('reviews/<slug:slug>/', review_detail_view, name = 'review-detail'),
 
     path('admin/', admin.site.urls),
     path('login/', login_view),

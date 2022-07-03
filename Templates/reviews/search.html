@@ -2,7 +2,8 @@
 
 {% block content %}
     {% if object %}
-        <h1> {{object.title}}</h1>
-        <p> {{object.content}}</p>
+        <h1>{{object.title}}</h1>
+        <p>{{object.content}}</p>
+        <p>{{object.get_absolute_url}</p>
     {% endif %} 
 {% endblock content %}

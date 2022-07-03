@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import Review #since we are already in reviews folder so we can relatively remove and simple keep .models
 from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
  
 
@@ -50,7 +51,7 @@ def review_create_view(request):
     if (form.is_valid()):
         review_obj = form.save()
         context['form'] = ReviewForm()
-
+        return redirect(review_obj.get_absolute_url())
         # context['object'] = review_obj
         # context['created'] = True
 
@@ -82,11 +83,25 @@ def review_create_view(request):
 #     return render(request, "reviews/create.html", context = context)
 
 
-def review_detail_view(request, id=None):
+def review_detail_view(request, slug=None):
     review_obj = None
-    if (id is not None):
-        review_obj = Review.objects.get(id=id)
+    if (slug is not None):
+        try:
+            review_obj = Review.objects.get(slug=slug)
+
+        except Review.DoesNotExist:
+            raise Http404
+
+        except Review.MultipleObjectsReturned:
+            review_obj = Review.objects.filter(slug=slug).first()
+
+        except:
+            raise Http404
+            
+
     context = {
                 "object" : review_obj
               }
+
+
     return render(request, "reviews/detail.html", context = context)
